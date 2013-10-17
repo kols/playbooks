@@ -1,13 +1,28 @@
 ---
-- hosts: workstations
-  vars:
-    local_repo: /data/srcode/vim
-    revision: default
+- hosts: all
+  tasks:
+    - group_by: key=${ansible_distribution}
+
+- name: Get the source code of vim from official repo
+  hosts: all
   user: kane
+  vars_files:
+    - vars/vim-latest_vars.yml
   tasks:
     - name: update repo
-      hg: repo=https://code.google.com/p/vim/ dest={{ local_repo }} revision={{ revision }}
+      hg: >
+        repo=https://code.google.com/p/vim/ dest={{ local_repo }}
+        revision={{ revision }}
       register: repo
+
+- name: Install vim
+  hosts:
+    - Linuxmint
+    - Debian
+    - Ubuntu
+  vars_files:
+    - vars/vim-latest_vars.yml
+  tasks:
     - name: remove distribution vim
       sudo: yes
       apt: pkg={{ item }} state=absent
@@ -15,6 +30,7 @@
         - vim
         - vim-runtime
         - gvim
+
     - name: install build deps
       sudo: yes
       apt: pkg={{ item }} state=latest
@@ -33,6 +49,7 @@
         - ruby-dev
         - mercurial
         - checkinstall
+
     - name: configure and build
       when: repo.changed
       shell: >
@@ -42,10 +59,12 @@
         --enable-cscope --prefix=/usr
         &&
         make
+
     - name: install
       when: repo.changed
       sudo: yes
       command: checkinstall chdir={{ local_repo }}
+
     - name: set as default editor
       when: repo.changed
       sudo: yes
