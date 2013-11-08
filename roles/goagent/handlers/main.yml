@@ -1,0 +1,5 @@
+---
+- name: restart goagent
+  shell: >
+    pkill -f {{ install_path }}/local/proxy.py;
+    python {{ install_path }}/local/proxy.py

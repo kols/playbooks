@@ -1,0 +1,14 @@
+---
+- name: clone or update goagent repo
+  git: repo=$repo dest=$repo_path version=$version
+  register: repo
+
+- name: configure goagent
+  ini_file: dest=$proxy_config_file section=gae option=appid
+            value={{ ansible_local.goagent.app_id }}
+
+- name: install goagent
+  #when: repo.changed
+  file: path=$install_path state=link src=$repo_path
+  notify:
+    - restart goagent

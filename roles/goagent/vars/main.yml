@@ -1,0 +1,6 @@
+---
+repo: https://github.com/goagent/goagent.git
+repo_path: "{{ local_repos }}/goagent"
+version: "3.0"
+proxy_config_file: "{{ repo_path }}/local/proxy.ini"
+install_path: ~/opt/goagent
