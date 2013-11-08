@@ -1,0 +1,3 @@
+---
+version: default
+repo_path: "{{ local_repos }}/vim"

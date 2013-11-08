@@ -1,8 +1,7 @@
 ---
 - name: Get the source code of vim from official repo
-  hg: >
-    repo=https://code.google.com/p/vim/ dest={{ local_repo }}
-    revision={{ revision }}
+  hg: repo=https://code.google.com/p/vim/ dest={{ repo_path }}
+      revision={{ version }}
   register: repo
 
 - name: remove distribution vim
@@ -37,7 +36,7 @@
 - name: configure and build
   when: repo.changed
   shell: >
-    chdir={{ local_repo }}
+    chdir={{ repo_path }}
     ./configure --with-features=huge --enable-rubyinterp
     --enable-pythoninterp --enable-perlinterp --enable-gui=gtk2
     --enable-cscope --prefix=/usr
@@ -47,7 +46,7 @@
 - name: install
   when: repo.changed
   sudo: yes
-  command: checkinstall chdir={{ local_repo }}
+  command: checkinstall chdir={{ repo_path }}
 
 - name: set as default editor
   when: repo.changed
