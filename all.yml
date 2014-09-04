@@ -10,7 +10,7 @@
     # fonts
     - homebrew_tap: name=caskroom/fonts
 
-    - homebrew: name={{ item }}
+    - homebrew: name={{ item }} state=latest
       with_items:
         # dev
         - git
@@ -20,10 +20,18 @@
         - siege
         - the_silver_searcher
         - xctool
+        - docker
+        - boot2docker
         ## language
         - rbenv
         - ruby-build
+        - rbenv-gem-rehash
+        - rbenv-vars
         - nvm
+
+        # music
+        - flac
+        - lame
 
         # tool
         - hub
@@ -31,9 +39,14 @@
         - graphviz
         - imagemagick
         - unrar
+        - p7zip
+        - lftp
+        - mtr
+        - watch
 
         # shell
         - zsh
+        - zsh-completions
         - autojump
         - pstree
         - tmux
@@ -41,3 +54,52 @@
 
         # other
         - fortune
+
+    - homebrew_cask: name={{ item }}
+      with_items:
+        - aliwangwang
+        - appcleaner
+        - calibre
+        - colloquy
+        - colorpicker-developer
+        - dash
+        - diffmerge
+        - evernote
+        - filezilla
+        - flux
+        - gas-mask
+        - gitx
+        - google-chrome
+        - grandperspective
+        - hipchat
+        - icefloor
+        - ifunbox
+        - iterm2
+        - lastfm
+        - liteicon
+        - macdown
+        - marked
+        - nethackcocoa
+        - nvalt
+        - openemu
+        - qq
+        - racket
+        - ringtones
+        - sequel-pro
+        - shiori
+        - sidestep
+        - skim
+        - skitch
+        - spotify
+        - sqlite-database-browser
+        - steam
+        - superduper
+        - transmission
+        - vagrant
+        - virtualbox
+        - vlc
+        - vox-preference-pane
+        - wechat
+        - weibox
+        - xiami
+        - xld
