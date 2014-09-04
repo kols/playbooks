@@ -1,0 +1,8 @@
+---
+- homebrew: name=vim
+- homebrew: name=macvim
+
+- name: Install vim bundles
+  command: make vim
+    chdir={{ dotfiles_dir }}
+    creates={{ vim_bundles_dir }}/vundle

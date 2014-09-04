@@ -1,0 +1,4 @@
+---
+- name: Install dotfiles
+  shell: curl -sL {{ dotfiles_bootstrap_file }} | make -s -f - install
+    creates={{ dotfiles_dir }}

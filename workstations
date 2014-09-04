@@ -1,9 +1,0 @@
-[osx]
-universe
-
-[linux]
-universe-w
-
-[workstations:children]
-linux
-osx

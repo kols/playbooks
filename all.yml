@@ -1,0 +1,43 @@
+---
+- hosts: localhost
+  roles:
+    - role: dashboard
+      disabled: YES
+    - role: dotfiles
+    - role: vim
+
+  tasks:
+    # fonts
+    - homebrew_tap: name=caskroom/fonts
+
+    - homebrew: name={{ item }}
+      with_items:
+        # dev
+        - git
+        - git-extras
+        - cloc
+        - jq
+        - siege
+        - the_silver_searcher
+        - xctool
+        ## language
+        - rbenv
+        - ruby-build
+        - nvm
+
+        # tool
+        - hub
+        - aria2
+        - graphviz
+        - imagemagick
+        - unrar
+
+        # shell
+        - zsh
+        - autojump
+        - pstree
+        - tmux
+        - tree
+
+        # other
+        - fortune
