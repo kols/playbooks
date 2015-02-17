@@ -1,0 +1,12 @@
+---
+- hosts: routers
+  gather_facts: no
+  vars_prompt:
+    - name: is_usb_attached
+      prompt: "Is an ext3 usb stick with label MYPART attached?"
+      default: "NO"
+      private: no
+  tasks:
+    - name: is usb attached
+      assert: { that: "is_usb_attached == 'YES'" }
+    - include: roles/entware/tasks/bootstrap.yml

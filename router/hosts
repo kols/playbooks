@@ -1,0 +1,2 @@
+[routers]
+harbinger ansible_python_interpreter=/opt/bin/python

@@ -1,0 +1,48 @@
+- name: configure usb settings
+  raw: >
+    nvram set usb_enable=1
+    && nvram set usb_usb2=1
+    && nvram set usb_storage=1
+    && nvram set usb_automount=1
+    && nvram set usb_fs_ext3=1
+
+- name: configure usb mount script
+  raw: >
+    nvram set script_usbmount="#!/bin/sh
+        /opt/etc/init.d/rc.unslung start"
+
+- name: configure usb umount script
+  raw: >
+    nvram set script_usbumount="#!/bin/sh
+        /opt/etc/init.d/rc.unslung stop
+        sleep 15
+        for i in `cat /proc/mounts | awk '/ext3/{print($1)}'` ; do
+            mount -o remount,ro $i
+        done"
+
+- name: configure init script
+  raw: nvram set script_init='echo "LABEL=MYPART /opt ext3 defaults 1 1" >> /etc/fstab'
+
+- name: commit settings
+  raw: nvram commit
+
+- name: reboot system
+  raw: reboot
+  when: "is_usb_attached == 'YES'"
+
+- name: wait while system rebooting
+  wait_for: host=harbinger port=2212 delay=10 search_regex=SSH
+  delegate_to: localhost
+  when: "is_usb_attached == 'YES'"
+
+- name: install entware
+  raw: >
+    wget -P ~ http://qnapware.zyxmon.org/binaries-armv7/installer/entware_install_arm.sh
+    && sh ~/entware_install_arm.sh
+  when: "is_usb_attached == 'YES'"
+
+- name: install python
+  raw: >
+    opkg update
+    && opkg install python
+  when: "is_usb_attached == 'YES'"
