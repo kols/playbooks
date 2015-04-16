@@ -1,0 +1,21 @@
+---
+- name: generate chnroutes
+  shell: >
+    bestroutetb -p custom --rule-format=$'%prefix/%length\n' --group-header=$'---%name-start\n' --group-footer=$'---%name-end\n' --group-gateway -s -f -o /tmp/chnroutes.txt
+    && sed -i '' -e '/---vpn-start/,/---vpn-end/d' -e '/^---/d' /tmp/chnroutes.txt
+  delegate_to: localhost
+
+- name: upload chnroutes.txt
+  copy: src=/tmp/chnroutes.txt dest=/opt/scripts/chnroutes.txt
+  register: uploaded
+
+- name: update ipset
+  shell: >
+    ipset -q create chnroute "hash:net" || true
+    && ipset create chnroute_new "hash:net"
+    && while read rule; do
+      ipset add chnroute_new $rule;
+    done </opt/scripts/chnroutes.txt
+    && ipset swap chnroute_new chnroute
+    && ipset destroy chnroute_new
+  when: uploaded.changed

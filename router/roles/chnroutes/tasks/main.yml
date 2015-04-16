@@ -1,0 +1,2 @@
+---
+- include: chnroutes.yml tags=chnroute
