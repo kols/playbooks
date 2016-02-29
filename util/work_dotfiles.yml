@@ -1,0 +1,4 @@
+---
+- hosts: work
+  tasks:
+    - synchronize: src=~/.dotfiles/work/ dest=~/
