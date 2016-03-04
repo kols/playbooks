@@ -1,0 +1,14 @@
+---
+- hosts: asura
+  become: yes
+  vars_prompt:
+    - name: "salt_master"
+      prompt: "Enter salt master id"
+      private: no
+  tasks:
+    - shell: curl -L https://bootstrap.saltstack.com -o - | sh -s -- stable
+    - lineinfile: "dest=/etc/salt/minion state=present regexp='^#master: salt$' backrefs=yes line='master: {{ salt_master }}'"
+      notify: restart salt-minion
+  handlers:
+    - name: restart salt-minion
+      service: name=salt-minion state=restarted enabled=yes
