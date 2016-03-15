@@ -1,5 +1,5 @@
 ---
 - hosts: work
   tasks:
-    - synchronize: src=~/.dotfiles/work/ dest=~/ archive=no copy_links=yes
-                   recursive=yes
+    - synchronize: src=~/.dotfiles/work/ dest=~/ owner=no group=no
+                   copy_links=yes recursive=yes
