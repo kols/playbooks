@@ -1,5 +1,6 @@
 ---
 - hosts: work
+  strategy: free
   tasks:
     - synchronize: src=~/.dotfiles/work/ dest=~/ owner=no group=no
                    copy_links=yes recursive=yes

@@ -1,5 +1,6 @@
 ---
 - hosts: work
+  strategy: free
   become: yes
   vars:
     ansible_ssh_pipelining: no
