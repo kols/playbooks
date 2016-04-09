@@ -1,17 +1,25 @@
 ---
 - hosts: work
+  strategy: free
   become: yes
   vars_prompt:
     - name: "salt_master"
       prompt: "Enter salt master id"
       private: no
   tasks:
-    - shell: curl -L https://bootstrap.saltstack.com -o - | sh -s -- stable creates=/usr/bin/salt-call
-    - name: set master id
+    - name: install saltstack stable
+      shell: curl -L https://bootstrap.saltstack.com -o - | sh -s -- stable creates=/usr/bin/salt-call
+    - name: configure master id
       lineinfile: "dest=/etc/salt/minion state=present regexp='^#master: salt$' backrefs=yes line='master: {{ salt_master }}'"
       notify: restart salt-minion
-    - name: set minion id
+    - name: configure minion id
       lineinfile: "dest=/etc/salt/minion state=present regexp='^#id:$' backrefs=yes line='id: {{ ansible_hostname }}'"
+      notify: restart salt-minion
+    - name: set console log level to info
+      lineinfile: "dest=/etc/salt/minion state=present regexp='^#log_level:.*$' backrefs=yes line='log_level: info'"
+      notify: restart salt-minion
+    - name: set file log level to info
+      lineinfile: "dest=/etc/salt/minion state=present regexp='^#log_level_logfile:.*$' backrefs=yes line='log_level_logfile: info'"
       notify: restart salt-minion
   handlers:
     - name: restart salt-minion
