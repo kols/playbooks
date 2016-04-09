@@ -7,7 +7,11 @@
       private: no
   tasks:
     - shell: curl -L https://bootstrap.saltstack.com -o - | sh -s -- stable creates=/usr/bin/salt-call
-    - lineinfile: "dest=/etc/salt/minion state=present regexp='^#master: salt$' backrefs=yes line='master: {{ salt_master }}'"
+    - name: set master id
+      lineinfile: "dest=/etc/salt/minion state=present regexp='^#master: salt$' backrefs=yes line='master: {{ salt_master }}'"
+      notify: restart salt-minion
+    - name: set minion id
+      lineinfile: "dest=/etc/salt/minion state=present regexp='^#id:$' backrefs=yes line='id: {{ ansible_hostname }}'"
       notify: restart salt-minion
   handlers:
     - name: restart salt-minion
