@@ -1,0 +1,10 @@
+---
+- name: get profile status
+  command: mongo --norc localhost:{{ mongod_port }} --eval 'printjson(db.getSiblingDB("{{ db }}").getProfilingStatus())'
+  tags:
+    - get_prof
+
+- name: set profile level
+  command: mongo --norc localhost:{{ mongod_port }} --eval 'assert.eq(db.getSiblingDB("{{ db }}").setProfilingLevel({{ level }}, {{ slow_ms }}).ok, 1)'
+  tags:
+    - set_prof
