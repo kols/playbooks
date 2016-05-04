@@ -1,0 +1,3 @@
+---
+- name: restart salt-minion
+  service: name=salt-minion state=restarted enabled=yes

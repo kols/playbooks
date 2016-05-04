@@ -1,0 +1,10 @@
+---
+- name: install saltstack stable
+  shell: curl -L https://bootstrap.saltstack.com -o - | sh -s -- {{ version }} creates=/usr/bin/salt-call
+  tags:
+    - bootstrap
+- name: install salt-minion configuration
+  template: src=files/minion.j2 dest=/etc/salt/minion backup=yes
+  notify: restart salt-minion
+  tags:
+    - bootstrap
