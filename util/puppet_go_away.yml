@@ -1,0 +1,13 @@
+---
+- hosts: asura
+  strategy: free
+  become: yes
+  tasks:
+    - name: stop and disable service
+      service: name=puppet enabled=no state=stopped
+      ignore_errors: yes
+    - name: remove package
+      package: name=puppet state=absent
+    - name: remove yum repo
+      file: path=/etc/yum.repos.d/puppetlabs.repo state=absent
+      when: ansible_distribution == "CentOS"
