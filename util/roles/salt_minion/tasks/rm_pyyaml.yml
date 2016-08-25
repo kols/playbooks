@@ -1,0 +1,5 @@
+---
+- name: remove pyyaml
+  file: path=/usr/lib64/python2.7/site-packages/PyYAML-3.11-py2.7.egg-info state=absent
+  tags:
+    - rm_pyyaml

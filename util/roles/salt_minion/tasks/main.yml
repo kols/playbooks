@@ -1,2 +1,4 @@
 ---
+- include: rm_pyyaml.yml
+  when: ansible_distribution == "CentOS"
 - include: bootstrap.yml
